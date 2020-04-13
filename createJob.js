@@ -63,7 +63,7 @@ const puppeteer = require("puppeteer");
     (lastPost) => lastPost.textContent,
     lastPost
   );
-
+  console.log(postId, randomNum);
   if (postId === randomNum) {
     console.log("Job post was created successfully");
     browser.close();
