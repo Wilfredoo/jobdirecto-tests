@@ -7,9 +7,7 @@ const puppeteer = require("puppeteer");
   await page.setDefaultNavigationTimeout(0);
   await page.goto("https://thawing-depths-06900.herokuapp.com/");
   const mainButton = "//*[@id='app']/div/div/div[4]/button[1]";
-
   await page.waitForXPath(mainButton);
-
   await page.$eval(".buttonBasic", (el) => el.click());
   await page.$x("input[@class='MuiInputBase-input']");
   const randomNum = await Math.floor(Math.random() * 100).toString();
@@ -63,6 +61,7 @@ const puppeteer = require("puppeteer");
     (lastPost) => lastPost.textContent,
     lastPost
   );
+
   console.log(postId, randomNum);
   if (postId === randomNum) {
     console.log("Job post was created successfully");

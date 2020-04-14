@@ -8,35 +8,22 @@ const puppeteer = require("puppeteer");
   await page.goto("https://thawing-depths-06900.herokuapp.com/");
   await page.waitForSelector("h6");
   let jobPosts = await page.$$("h5");
-  const thirdJobPost = jobPosts[2];
-  const positionInMain = await page.evaluate(
-    (thirdJobPost) => thirdJobPost.textContent,
-    thirdJobPost
-  );
+  const sixthJobPost = jobPosts[5];
   // click job post
-  await thirdJobPost.click();
-  await page.waitForXPath("//div[contains(@class, 'bUwXfy')]");
-  const modalTexts = await page.$x("//div[contains(@class, 'bUwXfy')]");
-  let secondTextModal = modalTexts[1];
-  const positionInModal = await page.evaluate(
-    (secondTextModal) => secondTextModal.textContent,
-    secondTextModal
+  await sixthJobPost.click();
+  const subscribeButton = await page.waitForXPath(
+    "//a[contains(@class, 'bqdxry')]"
   );
-  if (positionInMain === positionInModal) {
-    let closeButton = await page.waitForXPath(
-      "//span[contains(@class, 'MuiIcon-root')]"
-    );
+  await subscribeButton.click();
+  const fbButton = await page.waitForXPath(
+    "//a[contains(@class, 'sc-eNQAEJ')]"
+  );
+  await fbButton.click();
+  const loginButton = await page.waitForXPath(
+    "//button[contains(@name, 'login')]"
+  );
+  await loginButton.click();
 
-    await closeButton.click();
-
-    let closeButton2 = await page.$x(
-      "//span[contains(@class, 'MuiIcon-root')]"
-    );
-    if (closeButton2.length === 0) {
-      console.log("Opening and closing job modal is working correctly");
-      browser.close();
-    }
-  } else {
-    console.error("Someone fucked up over here");
-  }
+  await page.type("#m_login_email", "casas.farach@yahoo.com");
+  await page.type("#password", "789654123");
 })();
