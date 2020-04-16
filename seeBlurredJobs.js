@@ -32,37 +32,38 @@ const puppeteer = require("puppeteer");
   const email = await page.waitForSelector("#email");
   const pass = await page.waitForSelector("#pass");
 
-  // await page.focus("#email");
+  await page.waitFor(1000);
+
   await page.evaluate((text) => {
     email.value = text;
   }, "casas.farach@yahoo.com");
+  await page.waitFor(1000);
 
   await page.evaluate((text) => {
     pass.value = text;
   }, "789654123");
+  await page.waitFor(1000);
+
   await loginButton.click();
-  console.log("-1");
 
-  // const continueASButton = await page.waitForXPath(
-  //   "//button[contains(@name, '__CONFIRM__')]"
-  // );
+  const [continueASButton] = await page.$x(
+    "//button[contains(@name, '__CONFIRM__')]"
+  );
 
+  if (continueASButton) {
+    continueASButton.click();
+  }
   // back in jobdirecto
-  await page.waitFor(2000);
   await page.waitForSelector("form");
-  console.log("2");
-  const nameInput = await page.waitForXPath(
-    "//input[contains(@name, 'cardHolderName')]"
+  await page.$eval(
+    "input[name=cardHolderName]",
+    (el) => (el.value = "Juan Contreras Canales del Monte")
   );
 
-  await nameInput.focus();
-
-  await page.keyboard.type("casas.farach@yahoo.com");
-
-  const emailInput = await page.waitForXPath(
-    "//input[contains(@name, 'cardHolderEmail')]"
+  await page.$eval(
+    "input[name=cardHolderEmail]",
+    (el) => (el.value = "juanitex@hotmail.com")
   );
-  const cardInput = await page.waitForXPath(
-    "//input[contains(@name, 'cardnumber')]"
-  );
+
+  await page.$eval("input[name=cardnumber]", (el) => (el.value = "42424242"));
 })();
