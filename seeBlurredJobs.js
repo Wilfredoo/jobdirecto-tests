@@ -54,16 +54,20 @@ const puppeteer = require("puppeteer");
     continueASButton.click();
   }
   // back in jobdirecto
-  await page.waitForSelector("form");
+  const form = await page.waitForSelector("form");
   await page.$eval(
     "input[name=cardHolderName]",
     (el) => (el.value = "Juan Contreras Canales del Monte")
   );
 
-  await page.$eval(
-    "input[name=cardHolderEmail]",
-    (el) => (el.value = "juanitex@hotmail.com")
-  );
-
-  await page.$eval("input[name=cardnumber]", (el) => (el.value = "42424242"));
+  await page.click("input[name=cardHolderEmail]");
+  await page.keyboard.type("juanitex@hotmail.com");
+  await page.keyboard.press("Tab");
+  let e;
+  for (e = 0; e < 15; e++) {
+    await page.waitFor(100);
+    await page.keyboard.type("4");
+    await page.waitFor(100);
+    await page.keyboard.type("2");
+  }
 })();
