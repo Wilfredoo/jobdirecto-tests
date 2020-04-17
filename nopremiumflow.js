@@ -32,36 +32,44 @@ const puppeteer = require("puppeteer");
   const email = await page.waitForSelector("#email");
   const pass = await page.waitForSelector("#pass");
 
-  await page.waitFor(1000);
-
+  await page.waitFor(1500);
   await page.evaluate((text) => {
     email.value = text;
-  }, "casas.farach@yahoo.com");
+  }, "nopremiumjd@gmail.com");
   await page.waitFor(1000);
-
   await page.evaluate((text) => {
     pass.value = text;
-  }, "789654123");
-  await page.waitFor(1000);
-
+  }, "jobdirectoiscool");
+  await page.waitFor(1500);
   await loginButton.click();
+  await page.waitFor(5000);
+
+  // const cookiesAlert = await page.$x(
+  //   "//div[@class='login_form_container']//div[@id='error_box']"
+  // );
 
   const [continueASButton] = await page.$x(
     "//button[contains(@name, '__CONFIRM__')]"
   );
 
   if (continueASButton) {
+    console.log("continueAs button appeared");
     continueASButton.click();
   }
+
+  // if (usar otra tarjeta) {
+  //   change to form
+  // }
+
   // back in jobdirecto
-  const form = await page.waitForSelector("form");
+  await page.waitForSelector("form");
   await page.$eval(
     "input[name=cardHolderName]",
     (el) => (el.value = "Juan Contreras Canales del Monte")
   );
 
   await page.click("input[name=cardHolderEmail]");
-  await page.keyboard.type("juanitex@hotmail.com");
+  await page.keyboard.type("nopremiumjd@gmail.com");
   await page.keyboard.press("Tab");
   let e;
   for (e = 0; e < 15; e++) {
@@ -70,4 +78,10 @@ const puppeteer = require("puppeteer");
     await page.waitFor(100);
     await page.keyboard.type("2");
   }
+
+  const payButton = await page.waitForXPath(
+    '//button[@class="sc-gqjmRU cxxCTv"]'
+  );
+
+  await payButton.click();
 })();
