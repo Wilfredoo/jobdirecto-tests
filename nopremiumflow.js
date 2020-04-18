@@ -13,7 +13,7 @@ const puppeteer = require("puppeteer");
   await page.goto("https://thawing-depths-06900.herokuapp.com/");
   await page.waitForSelector("h6");
   let jobPosts = await page.$$("h5");
-  const sixthJobPost = jobPosts[5];
+  let sixthJobPost = jobPosts[5];
   // click job post
   await sixthJobPost.click();
   const subscribeButton = await page.waitForXPath(
@@ -111,4 +111,17 @@ const puppeteer = require("puppeteer");
   );
 
   await payButton.click();
+
+  await page.waitForXPath("//p[contains(@class, 'cGkjfA')]");
+  const closeButton = await page.waitForXPath(
+    "//button[contains(@class, 'jjRNmD')]"
+  );
+  await closeButton.click();
+
+  jobPosts = await page.$$("h5");
+  sixthJobPost = jobPosts[5];
+  await sixthJobPost.click();
+
+  await page.waitForXPath("//div[contains(@class, 'cPSvK')]//h2");
+  browser.close();
 })();
