@@ -4,7 +4,7 @@ const puppeteer = require("puppeteer");
 (async () => {
     const browser = await puppeteer.launch({
         headless: false,
-        executablePath: "/usr/bin/google-chrome",
+        slowMo: 200,
     });
     const context = browser.defaultBrowserContext();
     context.overridePermissions("https://www.facebook.com", ["notifications"]);
@@ -34,11 +34,30 @@ const puppeteer = require("puppeteer");
 
     await page.evaluate((text) => {
         email.value = text;
-    }, "premiumjd@gmail.com");
+    }, "yespremiumjd@gmail.com");
     await page.waitFor(500);
     await page.evaluate((text) => {
         pass.value = text;
     }, "jobdirectoiscool");
     await page.waitFor(500);
     await loginButton.click();
+
+    const continueASButton = await page
+        .waitForXPath("//button[contains(@name, '__CONFIRM__')]", {
+            timeout: 3000,
+        })
+        .catch((e) => void e);
+
+    if (continueASButton) {
+        console.log("continueAs button appeared");
+        continueASButton.click();
+    }
+
+    jobPosts = await page.$$("h5");
+    sixthJobPost = jobPosts[5];
+    sixthJobPost.click();
+
+    await page.waitForXPath("//div[contains(@class, 'MuiDialogTitle-root')]");
+    console.log("premium flow test passed");
+    browser.close();
 })();
