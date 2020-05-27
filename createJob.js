@@ -9,6 +9,10 @@ const puppeteer = require("puppeteer");
     const mainButton = "//*[@id='app']/div/div/div[4]/button[1]";
     await page.waitForXPath(mainButton);
     await page.$eval(".buttonBasic", (el) => el.click());
+    await page.$eval("li[tabindex='0']", (el) => el.click());
+
+    
+
     await page.$x("input[@class='MuiInputBase-input']");
     const jobId = await Math.floor(Math.random() * 10000).toString();
     // restname
@@ -45,11 +49,11 @@ const puppeteer = require("puppeteer");
     await page.focus('textarea[name="extraInfo"]');
     await page.keyboard.type("que no fume durante el trabajo");
     // click listo button
-    const [listo] = await page.$x("(//button)[2]");
+    const [listo] = await page.$x("//button");
     if (listo) listo.click();
     // click publish button
     await page.waitForSelector("h2");
-    const [publish] = await page.$x("(//button)[4]");
+    const [publish] = await page.$x("(//button)[3]");
     if (publish) publish.click();
     // verify that the post was created
     await page.waitForSelector("h6");
