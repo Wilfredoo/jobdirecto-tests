@@ -7,6 +7,7 @@ const puppeteer = require("puppeteer");
   await page.setDefaultNavigationTimeout(0);
   await page.goto("https://thawing-depths-06900.herokuapp.com/");
   await page.waitForSelector("h6");
+
   let jobPosts = await page.$$("h5");
   const thirdJobPost = jobPosts[2];
   const positionInMain = await page.evaluate(
@@ -15,17 +16,29 @@ const puppeteer = require("puppeteer");
   );
   // click job post
   await thirdJobPost.click();
-  await page.waitForXPath("//div[contains(@class, 'bUwXfy')]");
-  const modalTexts = await page.$x("//div[contains(@class, 'bUwXfy')]");
-  let secondTextModal = modalTexts[1];
-  const positionInModal = await page.evaluate(
-    (secondTextModal) => secondTextModal.textContent,
-    secondTextModal
-  );
-  if (positionInMain === positionInModal) {
+  await page.waitForXPath("//div[contains(@class, 'MuiGrid-root sc-htoDjs iErSsN')][6]");
+
+  //shouldnt take more than 4 seconds to retrieve data from db
+  await page.waitFor(4000)
+
+  const fieldContentArray = await page.$x("//div[contains(@class, 'MuiGrid-root sc-htoDjs iErSsN MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-9 MuiGrid-grid-md-9')]"); 
+  const addressDiv = fieldContentArray[5]
+  const phoneDiv = fieldContentArray[7]
+  const addressText = await page.evaluate(addressDiv => addressDiv.textContent, addressDiv);
+  const phoneText = await page.evaluate(phoneDiv => phoneDiv.textContent, phoneDiv);
+  console.log("true and false", addressText === "" , phoneText === "")
+
+  console.log("should be true", addressText !== "" || phoneText !== "")
+
+
+
+
+    if (false) {
     let closeButton = await page.waitForXPath(
       "//span[contains(@class, 'MuiIcon-root')]"
     );
+
+  
 
     await closeButton.click();
 
