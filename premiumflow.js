@@ -13,15 +13,15 @@ const puppeteer = require("puppeteer");
     await page.goto("https://thawing-depths-06900.herokuapp.com/");
     await page.waitForSelector("h6");
     let jobPosts = await page.$$("h5");
-    let sixthJobPost = jobPosts[5];
+    let tenthPost = jobPosts[9];
     // click job post
-    await sixthJobPost.click();
+    await tenthPost.click();
     const subscribeButton = await page.waitForXPath(
-        "//a[contains(@class, 'bqdxry')]"
+        "//a[contains(@class, 'sc-elJkPf')]"
     );
     await subscribeButton.click();
     const fbButton = await page.waitForXPath(
-        "//a[contains(@class, 'sc-eNQAEJ')]"
+        "//a[contains(@class, 'sc-fAjcbJ')]"
     );
     await fbButton.click();
 
@@ -52,11 +52,12 @@ const puppeteer = require("puppeteer");
         console.log("continueAs button appeared");
         continueASButton.click();
     }
-
-    jobPosts = await page.$$("h5");
-    sixthJobPost = jobPosts[5];
-    sixthJobPost.click();
-
+await page.waitForNavigation
+await page.waitForSelector("h6");
+   let jobPostsAgain = await page.$$("h5");
+  let tenthPostAgain = jobPostsAgain[10];
+tenthPostAgain.click();
+console.log("and here?")
     await page.waitForXPath("//div[contains(@class, 'MuiDialogTitle-root')]");
     console.log("premium flow test passed");
     browser.close();

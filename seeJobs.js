@@ -20,20 +20,15 @@ let i;
   const div5 = valuesArray[5]
   const div7 = valuesArray[7]
 
-
   let div5Value;
   let div7Value;
   if (div7 !== undefined) {div5Value = await page.evaluate(div5 => div5.textContent, div5);}
   if (div7 !== undefined) {div7Value = await page.evaluate(div7 => div7.textContent, div7);}
-  
-
     if (div5Value !== "" || div7Value !== "") { //this means that some data was retrieved from db when opening the modal
     let closeButton = await page.waitForXPath(
       "//span[contains(@class, 'MuiIcon-root')]"
     );
-
     await closeButton.click();
-
     let closeButton2 = await page.$x(
       "//span[contains(@class, 'MuiIcon-root')]"
     );
@@ -44,6 +39,7 @@ let i;
     console.error("Someone fucked up over here");
   }
 }
+console.log("see 5 jobs test passed")
       browser.close();
 
 })();
