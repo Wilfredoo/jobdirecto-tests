@@ -7,38 +7,30 @@ const puppeteer = require("puppeteer");
   await page.setDefaultNavigationTimeout(0);
   await page.goto("https://thawing-depths-06900.herokuapp.com/");
   await page.waitForSelector("h6");
-
+let i;
+  for (i = 0; i < 5; i++) {
   let jobPosts = await page.$$("h5");
-  const thirdJobPost = jobPosts[2];
-  const positionInMain = await page.evaluate(
-    (thirdJobPost) => thirdJobPost.textContent,
-    thirdJobPost
-  );
+  const jobPost = jobPosts[i];
   // click job post
-  await thirdJobPost.click();
+  await jobPost.click();
   await page.waitForXPath("//div[contains(@class, 'MuiGrid-root sc-htoDjs iErSsN')][6]");
-
   //shouldnt take more than 4 seconds to retrieve data from db
-  await page.waitFor(4000)
-
-  const fieldContentArray = await page.$x("//div[contains(@class, 'MuiGrid-root sc-htoDjs iErSsN MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-9 MuiGrid-grid-md-9')]"); 
-  const addressDiv = fieldContentArray[5]
-  const phoneDiv = fieldContentArray[7]
-  const addressText = await page.evaluate(addressDiv => addressDiv.textContent, addressDiv);
-  const phoneText = await page.evaluate(phoneDiv => phoneDiv.textContent, phoneDiv);
-  console.log("true and false", addressText === "" , phoneText === "")
-
-  console.log("should be true", addressText !== "" || phoneText !== "")
+  await page.waitFor(2000)
+  const valuesArray = await page.$x("//div[contains(@class, 'MuiGrid-grid-sm-9')]"); 
+  const div5 = valuesArray[5]
+  const div7 = valuesArray[7]
 
 
+  let div5Value;
+  let div7Value;
+  if (div7 !== undefined) {div5Value = await page.evaluate(div5 => div5.textContent, div5);}
+  if (div7 !== undefined) {div7Value = await page.evaluate(div7 => div7.textContent, div7);}
+  
 
-
-    if (false) {
+    if (div5Value !== "" || div7Value !== "") { //this means that some data was retrieved from db when opening the modal
     let closeButton = await page.waitForXPath(
       "//span[contains(@class, 'MuiIcon-root')]"
     );
-
-  
 
     await closeButton.click();
 
@@ -47,9 +39,11 @@ const puppeteer = require("puppeteer");
     );
     if (closeButton2.length === 0) {
       console.log("Opening and closing job modal is working correctly");
-      browser.close();
     }
   } else {
     console.error("Someone fucked up over here");
   }
+}
+      browser.close();
+
 })();
