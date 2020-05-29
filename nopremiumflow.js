@@ -12,17 +12,19 @@ const puppeteer = require("puppeteer");
     await page.goto("https://thawing-depths-06900.herokuapp.com/");
     await page.waitForSelector("h6");
     let jobPosts = await page.$$("h5");
-    let sixthJobPost = jobPosts[5];
-    // click job post
-    await sixthJobPost.click();
-    const subscribeButton = await page.waitForXPath(
-        "//a[contains(@class, 'bqdxry')]"
-    );
+    let tenthPost = jobPosts[9];
 
+    // click job post
+    await tenthPost.click();
+  
+    const subscribeButton = await page.waitForXPath(
+        "//a[contains(@class, 'sc-elJkPf')]"
+    );
     await subscribeButton.click();
     const fbButton = await page.waitForXPath(
-        "//a[contains(@class, 'sc-eNQAEJ')]"
+        "//a[contains(@class, 'sc-fAjcbJ')]"
     );
+
     await fbButton.click();
 
     // redirected to facebook page
@@ -75,6 +77,12 @@ const puppeteer = require("puppeteer");
         continueASButton.click();
     }
 
+    await page.waitForNavigation
+    await page.waitForSelector("h6");
+    let jobPostsAgain = await page.$$("h5");
+    let tenthPostAgain = jobPostsAgain[10];
+    tenthPostAgain.click();
+
     const anotherCard = await page
         .waitForXPath("//span[contains(text(),'otra tarjeta')]", {
             timeout: 3000,
@@ -105,22 +113,24 @@ const puppeteer = require("puppeteer");
     }
 
     const payButton = await page.waitForXPath(
-        '//button[@class="sc-gqjmRU cxxCTv"]'
+        '//button[@class="sc-iRbamj bGTzCg"]'
     );
 
     await payButton.click();
 
-    await page.waitForXPath("//p[contains(@class, 'cGkjfA')]");
+    // await page.waitForXPath("//p[contains(@class, 'cGkjfA')]");
+    console.log("will find close button")
     const closeButton = await page.waitForXPath(
-        "//button[contains(@class, 'jjRNmD')]"
+        "//button[contains(@class, 'iaJQrc')]"
     );
+    console.log("found close button")
     await closeButton.click();
 
-    jobPosts = await page.$$("h5");
-    sixthJobPost = jobPosts[5];
-    await sixthJobPost.click();
+    let jobPostsAgain2 = await page.$$("h5");
+    let tenthPostAgain2 = jobPostsAgain2[10];
+    tenthPostAgain2.click();
 
     await page.waitForXPath("//div[contains(@class, 'cPSvK')]//h2");
-    console.log("no premium flow test passed");
+    console.log("no-premium flow test passed");
     browser.close();
 })();
